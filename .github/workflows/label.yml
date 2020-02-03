@@ -15,4 +15,10 @@ jobs:
   label:
     runs-on: ubuntu-latest
     steps:
-      - run: curl -v -H 'Content-Type:application/json; charset=UTF-8' -H 'X-Accept:application/json' -X POST -d '{"name":"A","description":"b","color":"f29513"}' https://api.github.com/repos/AgendaDoi/GithubActionsTagLabelTest/labels?access_token=${{ secrets.GITHUB_TOKEN }}
+      - name: Set output
+        id: vars
+        run: echo ::set-output name=tag::${GITHUB_REF:10}
+      - name: Check output
+        env:
+          RELEASE_VERSION: ${{ steps.vars.outputs.tag }}
+      - run: curl -v -H 'Content-Type:application/json; charset=UTF-8' -H 'X-Accept:application/json' -X POST -d '{"name":${{ steps.vars.outputs.tag }},"description":"b","color":"f29513"}' https://api.github.com/repos/AgendaDoi/GithubActionsTagLabelTest/labels?access_token=${{ secrets.GITHUB_TOKEN }}
