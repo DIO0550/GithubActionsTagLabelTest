@@ -17,4 +17,4 @@ jobs:
     steps:
       - uses: olegtarasov/get-tag@v1
         id: tagName
-      - run: curl -v -H 'Content-Type:application/json; charset=UTF-8' -H 'X-Accept:application/json' -X POST -d '{"name":"${{ steps.tagName.outputs.tag }}","description":"b","color":"f29513"}' https://api.github.com/repos/AgendaDoi/GithubActionsTagLabelTest/labels?access_token=${{ secrets.GITHUB_TOKEN }}
+      - run: curl -v -H 'Content-Type:application/json; charset=UTF-8' -H 'X-Accept:application/json' -X POST -d '{"name":"${{ steps.tagName.outputs.tag }}","description":${{ github.event.head_commit.message }},"color":"f29513"}' https://api.github.com/repos/AgendaDoi/GithubActionsTagLabelTest/labels?access_token=${{ secrets.GITHUB_TOKEN }}
