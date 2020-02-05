@@ -25,4 +25,5 @@ jobs:
       - name: Echo
         run: | 
               echo "${{ env.TAG_MESSAGE }}"
+              curl https://api.github.com/repos/AgendaDoi/GithubActionsTagLabelTest/tags/${{ github.sha }}?access_token=${{ secrets.GITHUB_TOKEN }}
       
