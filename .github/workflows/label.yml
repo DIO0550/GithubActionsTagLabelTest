@@ -16,7 +16,6 @@ jobs:
     steps:
       - uses: olegtarasov/get-tag@v1
         id: tagName
-      - name: Set env
       - run: |
               echo ::set-env name=TAG_SHA::$(git rev-parse ${{ steps.tagName.outputs.tag }})
               echo ::set-env name=TAG_MESSAGE::$(curl https://api.github.com/repos/AgendaDoi/GithubActionsTagLabelTest/tags/${{ env.TAG_SHA }}?access_token=${{ secrets.GITHUB_TOKEN }} | jq -r "message")
