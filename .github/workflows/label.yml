@@ -18,6 +18,6 @@ jobs:
       - uses: olegtarasov/get-tag@v1
         id: tagName
       - run: |
-              tag_sha=`git rev-parse ${{ steps.tagName.outputs.tag }}'
-              tag_message=curl https://api.github.com/repos/AgendaDoi/GithubActionsTagLabelTest/tags/${{ tag_sha }}?access_token=${{ secrets.GITHUB_TOKEN }} | jq -r "message"
+              ::set-output name="tag_sha"::`git rev-parse ${{ steps.tagName.outputs.tag }}'
+              ::set-output name="tag_message"::curl https://api.github.com/repos/AgendaDoi/GithubActionsTagLabelTest/tags/${{ tag_sha }}?access_token=${{ secrets.GITHUB_TOKEN }} | jq -r "message"
               curl -v -H 'Content-Type:application/json; charset=UTF-8' -H 'X-Accept:application/json' -X POST -d '{"name":"${{ steps.tagName.outputs.tag }}","description":"${{ tag_message }}","color":"f29513"}' https://api.github.com/repos/AgendaDoi/GithubActionsTagLabelTest/labels?access_token=${{ secrets.GITHUB_TOKEN }}
