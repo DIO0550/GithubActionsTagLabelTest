@@ -24,6 +24,6 @@ jobs:
       
       - name: Echo
         run: | 
-              echo "echo "${{ env.TAG_SHA }}""
-              git rev-parse ${{ steps.tagName.outputs.tag }}
+              echo "${{ env.TAG_SHA }}"
+              echo "${{ github.sha }}"
       
