@@ -14,16 +14,20 @@ jobs:
   label:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: olegtarasov/get-tag@v1
         id: tagName
       - name: Tag 
         run: |
-              echo "::set-env name=TAG_SHA::$(git rev-parse ${{ steps.tagName.outputs.tag }})"
-              echo "::set-env name=TAG_MESSAGE::$(curl https://api.github.com/repos/AgendaDoi/GithubActionsTagLabelTest/tags/${{ github.sha }}?access_token=${{ secrets.GITHUB_TOKEN }} | jq -r "message")"
-              curl -v -H 'Content-Type:application/json; charset=UTF-8' -H 'X-Accept:application/json' -X POST -d '{"name":"${{ steps.tagName.outputs.tag }}","description":"${{ env.TAG_MESSAGE }}","color":"f29513"}' https://api.github.com/repos/AgendaDoi/GithubActionsTagLabelTest/labels?access_token=${{ secrets.GITHUB_TOKEN }}
-      
+              echo "::set-env name=TAG_NAME::${{ tagName }}
+              
       - name: Echo
         run: | 
               echo "${{ env.TAG_MESSAGE }}"
               curl https://api.github.com/repos/AgendaDoi/GithubActionsTagLabelTest/tags/${{ github.sha }}?access_token=${{ secrets.GITHUB_TOKEN }}
       
+      - uses: actions/checkout@v1
+      - name: label
+        run: |
+              echo "::set-env name=TAG_SHA::$(git rev-parse ${{ steps.tagName.outputs.tag }})"
+              echo "::set-env name=TAG_MESSAGE::$(curl https://api.github.com/repos/AgendaDoi/GithubActionsTagLabelTest/tags/${{ github.sha }}?access_token=${{ secrets.GITHUB_TOKEN }} | jq -r "message")"
+              curl -v -H 'Content-Type:application/json; charset=UTF-8' -H 'X-Accept:application/json' -X POST -d '{"name":"${{ steps.tagName.outputs.tag }}","description":"${{ env.TAG_MESSAGE }}","color":"f29513"}' https://api.github.com/repos/AgendaDoi/GithubActionsTagLabelTest/labels?access_token=${{ secrets.GITHUB_TOKEN }}
