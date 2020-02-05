@@ -5,13 +5,11 @@
 # file with configuration.  For more information, see:
 # https://github.com/actions/labeler/blob/master/README.md
 
-              # tagsha=`git rev-parse ${{ steps.tagName.outputs.tag }}'
 name: Labeler
 on: 
   push:
     tags: 
       - V*
-
 jobs:
   label:
     runs-on: ubuntu-latest
@@ -19,5 +17,6 @@ jobs:
       - uses: olegtarasov/get-tag@v1
         id: tagName
       - run: |
-              tag_message='curl https://api.github.com/repos/AgendaDoi/GithubActionsTagLabelTest/tags/AA?access_token=${{ secrets.GITHUB_TOKEN }} | jq -r "message"'
-              curl -v -H 'Content-Type:application/json; charset=UTF-8' -H 'X-Accept:application/json' -X POST -d '{"name":"${{ steps.tagName.outputs.tag }}","description":"${{ tag_message }}","color":"f29513"}' https://api.github.com/repos/AgendaDoi/GithubActionsTagLabelTest/labels?access_token=${{ secrets.GITHUB_TOKEN }}
+              echo ::set-env name=TAG_SHA::'git rev-parse ${{ steps.tagName.outputs.tag }}'
+              echo ::set-env name=TAG_MESSAGE::'curl https://api.github.com/repos/AgendaDoi/GithubActionsTagLabelTest/tags/${{ env.TAG_SHA }}?access_token=${{ secrets.GITHUB_TOKEN }} | jq -r "message"'
+              curl -v -H 'Content-Type:application/json; charset=UTF-8' -H 'X-Accept:application/json' -X POST -d '{"name":"${{ steps.tagName.outputs.tag }}","description":"${{ env.TAG_MESSAGE }}","color":"f29513"}' https://api.github.com/repos/AgendaDoi/GithubActionsTagLabelTest/labels?access_token=${{ secrets.GITHUB_TOKEN }}
