@@ -16,8 +16,10 @@ jobs:
     steps:
       - uses: olegtarasov/get-tag@v1
         id: tagName
+      - name: Tag 
       - run: |
               echo "::set-env name=TAG_SHA::$(git rev-parse ${{ steps.tagName.outputs.tag }})"
-              echo "${{ TAG_SHA }}"
               echo "::set-env name=TAG_MESSAGE::$(curl https://api.github.com/repos/AgendaDoi/GithubActionsTagLabelTest/tags/${{ env.TAG_SHA }}?access_token=${{ secrets.GITHUB_TOKEN }} | jq -r "message")"
               curl -v -H 'Content-Type:application/json; charset=UTF-8' -H 'X-Accept:application/json' -X POST -d '{"name":"${{ steps.tagName.outputs.tag }}","description":"${{ env.TAG_MESSAGE }}","color":"f29513"}' https://api.github.com/repos/AgendaDoi/GithubActionsTagLabelTest/labels?access_token=${{ secrets.GITHUB_TOKEN }}
+      - name: Echo
+        run: echo "echo "${{ env.TAG_SHA }}""
