@@ -2,7 +2,7 @@ name: CreateIssuesLabel
 on: 
   push:
     tags:
-      - V*
+      - release/*
 jobs:
   label:
     runs-on: ubuntu-latest
