@@ -1,4 +1,4 @@
-name: Labeler
+name: CreateIssuesLabel
 on: 
   push:
     tags:
@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: olegtarasov/get-tag@v1
         id: tagName
-      - name: Tag 
+      - name: GET TAG NAME 
         run: |
               echo "::set-env name=TAG_NAME::${{ steps.tagName.outputs.tag  }}"
               
@@ -21,5 +21,6 @@ jobs:
       - name: GET TAG MESSAGE
         run: | 
               echo "::set-env name=TAG_MESSAGE::$(curl https://api.github.com/repos/AgendaDoi/GithubActionsTagLabelTest/git/tags/${{ env.TAG_SHA }}?access_token=${{ secrets.GITHUB_TOKEN }} | jq -r '."message"')"
+     
       - name: CREATE LABEL
         run: curl -v -H 'Content-Type:application/json; charset=UTF-8' -H 'X-Accept:application/json' -X POST -d '{"name":"occurs Ver:${{ env.TAG_NAME }}","description":"${{ env.TAG_MESSAGE }}","color":"000000"}' https://api.github.com/repos/AgendaDoi/GithubActionsTagLabelTest/labels?access_token=${{ secrets.GITHUB_TOKEN }}
