@@ -22,4 +22,4 @@ jobs:
         run: | 
               echo "::set-env name=TAG_MESSAGE::$(curl https://api.github.com/repos/AgendaDoi/GithubActionsTagLabelTest/git/tags/${{ env.TAG_SHA }}?access_token=${{ secrets.GITHUB_TOKEN }} | jq -r '."message"')"
       - name: CREATE LABEL
-        run: curl -v -H 'Content-Type:application/json; charset=UTF-8' -H 'X-Accept:application/json' -X POST -d '{"name":"occurs Ver:${{ env.TAG_NAME }}","description":"${{ env.TAG_MESSAGE }}","color":"f29513"}' https://api.github.com/repos/AgendaDoi/GithubActionsTagLabelTest/labels?access_token=${{ secrets.GITHUB_TOKEN }}
+        run: curl -v -H 'Content-Type:application/json; charset=UTF-8' -H 'X-Accept:application/json' -X POST -d '{"name":"occurs Ver:${{ env.TAG_NAME }}","description":"${{ env.TAG_MESSAGE }}","color":"000000"}' https://api.github.com/repos/AgendaDoi/GithubActionsTagLabelTest/labels?access_token=${{ secrets.GITHUB_TOKEN }}
